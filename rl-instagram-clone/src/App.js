@@ -10,7 +10,12 @@ function App() {
       imageUrl:
         "https://images.pexels.com/photos/338713/pexels-photo-338713.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
     },
-    {},
+    {
+      username: "Wachira",
+      caption: "Wow! Cheki hiyo drink",
+      imageUrl:
+        "https://images.pexels.com/photos/338713/pexels-photo-338713.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+    },
   ]);
 
   return (
@@ -22,6 +27,13 @@ function App() {
           alt=""
         />
       </div>
+      {posts.map((post) => (
+        <Post
+          username={post.username}
+          caption={post.caption}
+          imageUrl={post.imageUrl}
+        />
+      ))}
 
       <Post
         username="Wachira"
