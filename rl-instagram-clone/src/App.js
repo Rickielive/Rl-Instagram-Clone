@@ -1,22 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import Post from "./Post";
+//import { db } from "./firebase";
+import db from "./firebase";
 
 function App() {
-  const [post, setPosts] = useState([
-    {
-      username: "Wachira",
-      caption: "Wow! Cheki hiyo drink",
-      imageUrl:
-        "https://images.pexels.com/photos/338713/pexels-photo-338713.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-    },
-    {
-      username: "Wachira",
-      caption: "Wow! Cheki hiyo drink",
-      imageUrl:
-        "https://images.pexels.com/photos/338713/pexels-photo-338713.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-    },
-  ]);
+  const [posts, setPosts] = useState([]);
+
+  // useEffect runs a piece od code based on a specific condtion
+  useEffect(() => {
+    // this is where the code runs
+    db.collection("posts").onSnapshot((snapshot) => {
+      // Everytime time a new post is added this code fires.
+      setPosts(
+        snapshot.docs.map((doc) => ({
+          id: doc.id,
+          post: doc.data(),
+        }))
+      );
+    });
+  }, []);
 
   return (
     <div className="app">
@@ -27,29 +30,21 @@ function App() {
           alt=""
         />
       </div>
-      {posts.map((post) => (
+
+      {posts.map(({ id, post }) => (
         <Post
+          key={id}
           username={post.username}
           caption={post.caption}
           imageUrl={post.imageUrl}
         />
       ))}
 
-      <Post
+      {/* <Post
         username="Wachira"
         caption="Wow! Cheki hiyo drink"
         imageUrl="https://images.pexels.com/photos/338713/pexels-photo-338713.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
-      />
-      <Post
-        username="Ann"
-        caption="Cheki hiyo pic"
-        imageUrl="https://images.pexels.com/photos/2600338/pexels-photo-2600338.jpeg?h=750&w=550&dpr=1&auto=compress"
-      />
-      <Post
-        username="Muthee"
-        caption=" Classic Kenyans"
-        imageUrl="https://images.pexels.com/photos/1300574/pexels-photo-1300574.jpeg?h=750&w=550&dpr=1&auto=compress"
-      />
+      /> */}
     </div>
   );
 }
