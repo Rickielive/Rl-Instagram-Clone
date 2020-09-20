@@ -2,14 +2,14 @@
 import firebase from "firebase";
 
 const firebaseApp = firebase.initializeApp({
-  apiKey: "AIzaSyACcKWQ-HbfhvKM3Q8e8tALH7zxe0Ebc04",
-  authDomain: "rl-instagram-clone.firebaseapp.com",
-  databaseURL: "https://rl-instagram-clone.firebaseio.com",
-  projectId: "rl-instagram-clone",
-  storageBucket: "rl-instagram-clone.appspot.com",
-  messagingSenderId: "786844891061",
-  appId: "1:786844891061:web:43df581026e983d7004bfc",
-  measurementId: "G-CWF9ZBPXN0",
+  apiKey: "AIzaSyAsFbeH2joAazp6F75CJgpJIhiQD7cgt9g",
+  authDomain: "rl-instagram-clone-369c9.firebaseapp.com",
+  databaseURL: "https://rl-instagram-clone-369c9.firebaseio.com",
+  projectId: "rl-instagram-clone-369c9",
+  storageBucket: "rl-instagram-clone-369c9.appspot.com",
+  messagingSenderId: "466209378570",
+  appId: "1:466209378570:web:e3dbe5f6e9468183722af3",
+  measurementId: "G-J63RDDR0YZ",
 });
 
 // Initialize Cloud Firestore through Firebase
@@ -22,5 +22,5 @@ const auth = firebase.auth();
 //How we are going to upload a bunch of pics and store it.
 const storage = firebase.storage();
 
-export default db;
-//export { db };
+//export default db;
+export { db, auth, storage };
