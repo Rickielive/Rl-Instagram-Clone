@@ -5,6 +5,8 @@ import { db, auth } from "./firebase";
 import Modal from "@material-ui/core/Modal";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Input } from "@material-ui/core";
+import ImageUpload from "./ImageUpload";
+import InstagramEmbed from "react-instagram-embed";
 //import firebase from "firebase";
 //import db from "./firebase";
 
@@ -69,9 +71,13 @@ function App() {
 
   useEffect(() => {
     // this is where the code runs
-    db.collection("posts").onSnapshot((snapshot) => {
-      setPosts(snapshot.docs.map((doc) => ({ id: doc.id, post: doc.data() })));
-    });
+    db.collection("posts")
+      .orderBy("timestamp", "desc")
+      .onSnapshot((snapshot) => {
+        setPosts(
+          snapshot.docs.map((doc) => ({ id: doc.id, post: doc.data() }))
+        );
+      });
   }, []);
 
   //useEffect runs a piece od code based on a specific condtion
@@ -169,13 +175,13 @@ function App() {
                 alt=""
               />
             </center>
-            {/*                              Not Needed only the Email and Password    
-            <Input                    
+            {/* Not Needed only the Email and Password */}
+            {/* <Input                    
               placeholder="username"
               type="username"
               value={username}
-              onChange={(e) => setUsername(e.target.value)} */}
-            />
+              onChange={(e) => setUsername(e.target.value)}
+            /> */}
             <Input
               placeholder="Email"
               type="text"
@@ -201,25 +207,16 @@ function App() {
           src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png"
           alt=""
         />
+
+        {user ? (
+          <Button onClick={() => auth.signOut()}>log Out</Button>
+        ) : (
+          <div className="app__loginContainer">
+            <Button onClick={() => setOpenSignin(true)}>Sign In</Button>
+            <Button onClick={() => setOpen(true)}>Sign Up</Button>
+          </div>
+        )}
       </div>
-
-      {user ? (
-        <Button onClick={() => auth.signOut()}>logOut</Button>
-      ) : (
-        <div className="app__loginContainer">
-          <Button onClick={() => setOpenSignin(true)}>SignIn</Button>
-          <Button onClick={() => setOpen(true)}>SignUp</Button>
-        </div>
-      )}
-
-      {posts.map(({ id, post }) => (
-        <Post
-          key={id}
-          username={post.username}
-          caption={post.caption}
-          imageUrl={post.imageUrl}
-        />
-      ))}
 
       {/* {posts.map(({ id, post }) => (
         <Post
@@ -229,6 +226,45 @@ function App() {
           imageUrl={post.imageUrl}
         />
       ))} */}
+
+      <div className="app__posts">
+        <div className="app__postsLeft">
+          {posts.map(({ id, post }) => (
+            <Post
+              key={id}
+              postId={id}
+              username={post.username}
+              caption={post.caption}
+              imageUrl={post.imageUrl}
+            />
+          ))}
+        </div>
+
+        <div className="app__postsRight">
+          {/* instagram Embed */}
+          <InstagramEmbed
+            url="https://instagr.am/p/Zw9o4/"
+            maxWidth={320}
+            hideCaption={false}
+            containerTagName="div"
+            protocol=""
+            injectScript
+            onLoading={() => {}}
+            onSuccess={() => {}}
+            onAfterRender={() => {}}
+            onFailure={() => {}}
+          />
+        </div>
+      </div>
+
+      {user?.displayName ? (
+        // if the user is present then...
+        <ImageUpload username={user.displayName} />
+      ) : (
+        // or do this
+        <h3> login to upload</h3>
+      )}
+
       <h1>Wachira</h1>
 
       {/* <Post
